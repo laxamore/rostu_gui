@@ -1,0 +1,3 @@
+#!/home/ahmadalfi/Training/python/bin/python
+from rospy import rosconsole
+rosconsole.main()
