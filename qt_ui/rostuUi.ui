@@ -10,6 +10,97 @@
     <height>680</height>
    </rect>
   </property>
+  <property name="palette">
+   <palette>
+    <active>
+     <colorrole role="Light">
+      <brush brushstyle="SolidPattern">
+       <color alpha="255">
+        <red>61</red>
+        <green>67</green>
+        <blue>74</blue>
+       </color>
+      </brush>
+     </colorrole>
+     <colorrole role="Base">
+      <brush brushstyle="SolidPattern">
+       <color alpha="255">
+        <red>35</red>
+        <green>38</green>
+        <blue>41</blue>
+       </color>
+      </brush>
+     </colorrole>
+     <colorrole role="Window">
+      <brush brushstyle="SolidPattern">
+       <color alpha="255">
+        <red>49</red>
+        <green>54</green>
+        <blue>59</blue>
+       </color>
+      </brush>
+     </colorrole>
+    </active>
+    <inactive>
+     <colorrole role="Light">
+      <brush brushstyle="SolidPattern">
+       <color alpha="255">
+        <red>61</red>
+        <green>67</green>
+        <blue>74</blue>
+       </color>
+      </brush>
+     </colorrole>
+     <colorrole role="Base">
+      <brush brushstyle="SolidPattern">
+       <color alpha="255">
+        <red>35</red>
+        <green>38</green>
+        <blue>41</blue>
+       </color>
+      </brush>
+     </colorrole>
+     <colorrole role="Window">
+      <brush brushstyle="SolidPattern">
+       <color alpha="255">
+        <red>49</red>
+        <green>54</green>
+        <blue>59</blue>
+       </color>
+      </brush>
+     </colorrole>
+    </inactive>
+    <disabled>
+     <colorrole role="Light">
+      <brush brushstyle="SolidPattern">
+       <color alpha="255">
+        <red>61</red>
+        <green>67</green>
+        <blue>74</blue>
+       </color>
+      </brush>
+     </colorrole>
+     <colorrole role="Base">
+      <brush brushstyle="SolidPattern">
+       <color alpha="255">
+        <red>49</red>
+        <green>54</green>
+        <blue>59</blue>
+       </color>
+      </brush>
+     </colorrole>
+     <colorrole role="Window">
+      <brush brushstyle="SolidPattern">
+       <color alpha="255">
+        <red>49</red>
+        <green>54</green>
+        <blue>59</blue>
+       </color>
+      </brush>
+     </colorrole>
+    </disabled>
+   </palette>
+  </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
@@ -475,7 +566,7 @@
    <property name="title">
     <string>Referee</string>
    </property>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -1241,37 +1332,6 @@
      </item>
     </layout>
    </widget>
-   <zorder>kickoffBtnM</zorder>
-   <zorder>freekickBtnM</zorder>
-   <zorder>goalkickBtnM</zorder>
-   <zorder>cornerBtnM</zorder>
-   <zorder>penaltyBtnM</zorder>
-   <zorder>goalBtnM</zorder>
-   <zorder>goalkickBtnC</zorder>
-   <zorder>freekickBtnC</zorder>
-   <zorder>kickoffBtnC</zorder>
-   <zorder>cornerBtnC</zorder>
-   <zorder>penaltyBtnC</zorder>
-   <zorder>goalBtnC</zorder>
-   <zorder>dropballBtn</zorder>
-   <zorder>stopBtn</zorder>
-   <zorder>resetBtn</zorder>
-   <zorder>startBtn</zorder>
-   <zorder>endBtn</zorder>
-   <zorder>groupBox_2</zorder>
-  </widget>
-  <widget class="QPushButton" name="testBtn">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>131</width>
-     <height>34</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Test</string>
-   </property>
   </widget>
   <widget class="QGroupBox" name="groupBox_2">
    <property name="geometry">
@@ -1285,7 +1345,7 @@
    <property name="title">
     <string>Robot</string>
    </property>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -1389,6 +1449,9 @@
      </item>
      <item>
       <widget class="QGroupBox" name="striker">
+       <property name="autoFillBackground">
+        <bool>true</bool>
+       </property>
        <property name="title">
         <string>Striker</string>
        </property>
@@ -1448,7 +1511,7 @@
    <property name="title">
     <string>Timer</string>
    </property>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -1698,6 +1761,19 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
+  </widget>
+  <widget class="QLabel" name="xy_coor_2">
+   <property name="geometry">
+    <rect>
+     <x>350</x>
+     <y>660</y>
+     <width>271</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>X &amp; Y : </string>
+   </property>
   </widget>
  </widget>
  <resources/>
