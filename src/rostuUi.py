@@ -9,6 +9,8 @@ import sys
 import roslib
 import rospy
 import rospkg
+import tf
+import yaml
 
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
 from geometry_msgs.msg import PoseStamped 
@@ -18,6 +20,13 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.uic import loadUi
+from setup import setupMainWindow
+
+class MainWindow(QMainWindow):
+    def __init__(self, parent=None):
+        super(MainWindow, self).__init__(parent)
+        self.form_widget = rostuWidget(self) 
+        self.setCentralWidget(self.form_widget)
 
 class Worker(QRunnable):
     def __init__(self, fn):
@@ -27,21 +36,25 @@ class Worker(QRunnable):
     def run(self):
         result = self.fn()
 
-class rostu(QWidget):
-    def __init__(self):
-        super(rostu, self).__init__()
+class rostuWidget(QWidget):
+    def __init__(self, parent=None):
+        super(rostuWidget, self).__init__(parent)
+        self.refereeCommand = None
+        self.loadRefereeCommand()
         self.path = rospkg.RosPack().get_path('rostu_gui')
-        
-        self.robotPose = Pose()
 
-        self.initSub()
+        self.listener = tf.TransformListener()
+        self.robotPose = [[0, 0, 0], [0, 0, 0, 0]]
+
         self.initUI()
+        self.initButton()
 
         self.setMouseTracking(True)
         self.mouseClickInFieldArea = False
         self.mouseClickPos = [0, 0]
         self.mouseReleasePos = [0, 0]
         self.mouseMovePos = [0, 0]
+        self.robotTeam = 'M'
         self.robotNav = False
         self.robotPoseEstimate = False
         self.strikerNav = False
@@ -51,13 +64,6 @@ class rostu(QWidget):
         self.goalkeeperNav = False
         self.goalkeeperPoseEstimate = False
 
-        self.strikerNavBtn.clicked.connect(self.strikerNavCall)
-        self.strikerPosBtn.clicked.connect(self.strikerPoseCall)
-        self.defenderNavBtn.clicked.connect(self.defenderNavCall)
-        self.defenderPosBtn.clicked.connect(self.defenderPoseCall)
-        self.goalkeeperNavBtn.clicked.connect(self.goalkeeperNavCall)
-        self.goalkeeperPosBtn.clicked.connect(self.goalkeeperPoseCall)
-
         self.updateFieldTimer = QTimer()
         self.updateFieldTimer.timeout.connect(self.updateFieldThread)
         self.updateFieldTimer.start(1)
@@ -65,37 +71,171 @@ class rostu(QWidget):
         self.threadpool = QThreadPool()
         print("Multithreading with maximum %d threads" % self.threadpool.maxThreadCount())
 
+    def loadRefereeCommand(self):
+        stream = open("/home/laxamore/catkin_ws/src/rostu_gui/cfg/refereeCommand.yaml", 'r')
+        self.refereeCommand = yaml.load(stream)
+    
+    def writeRefereeCommand(self, param, value):
+        stream = open("/home/laxamore/catkin_ws/src/rostu_gui/cfg/refereeCommand.yaml", 'w')
+        self.refereeCommand[param] = value
+        yaml.dump(self.refereeCommand, stream)
+
     def initUI(self):
         #Load Design UI Dari QtDesign
         loadUi(self.path + '/qt_ui/rostuUi.ui', self)
         #Setting Fixed Frame Window
         self.setFixedSize(1280, 680)
 
-    def initSub(self):
-        self.s_p_sub = rospy.Subscriber('/amcl_pose', PoseWithCovarianceStamped, self.striker_pose_callback)
+    def initButton(self):
+        self.penaltyUp.setVisible(False)
+        self.penaltyBot.setVisible(False)
+        self.cornerLeft.setVisible(False)
+        self.cornerRight.setVisible(False)
 
-    def striker_pose_callback(self, data):
-        self.robotPose = data.pose.pose
+        self.refereeSetup.clicked.connect(self.openRefereeSetup)
+
+        self.teamCyan.clicked.connect(self.changeTeam)
+        self.teamMagenta.clicked.connect(self.changeTeam)
+        self.strikerNavBtn.clicked.connect(self.strikerNavCall)
+        self.strikerPosBtn.clicked.connect(self.strikerPoseCall)
+        self.defenderNavBtn.clicked.connect(self.defenderNavCall)
+        self.defenderPosBtn.clicked.connect(self.defenderPoseCall)
+        self.goalkeeperNavBtn.clicked.connect(self.goalkeeperNavCall)
+        self.goalkeeperPosBtn.clicked.connect(self.goalkeeperPoseCall)
+
+        #Referee Button
+        self.kickoffBtnM.clicked.connect(self.kickoffM)
+        self.freekickBtnM.clicked.connect(self.freekickM)
+        self.goalkickBtnM.clicked.connect(self.goalkickM)
+        self.cornerBtnM.clicked.connect(self.cornerM)
+        self.penaltyBtnM.clicked.connect(self.penaltyM)
+        self.goalBtnM.clicked.connect(self.goalM)
+
+        self.kickoffBtnC.clicked.connect(self.kickoffC)
+        self.freekickBtnC.clicked.connect(self.freekickC)
+        self.goalkickBtnC.clicked.connect(self.goalkickC)
+        self.cornerBtnC.clicked.connect(self.cornerC)
+        self.penaltyBtnC.clicked.connect(self.penaltyC)
+        self.goalBtnC.clicked.connect(self.goalC)
+
+        self.startBtn.clicked.connect(self.startReferee)
+        self.stopBtn.clicked.connect(self.stopReferee)
+        self.dropballBtn.clicked.connect(self.dropballReferee)
+        self.endBtn.clicked.connect(self.endReferee)
+        self.resetBtn.clicked.connect(self.resetReferee)
+
+    def openRefereeSetup(self):
+        self.setEnabled(False)
+        self.window = setupMainWindow()
+        self.window.refereeSetup(self, self.xy_coor.text(), self.refereeCommand)
+        self.window.setWindowTitle('Referee Setup')
+        self.window.show()
+
+    # def openStrikerSetup(self):
+    #     self.setEnabled(False)
+    #     self.window = setupMainWindow()
+    #     self.window.strikerSetup(self)
+    #     self.window.setWindowTitle('Striker Setup')
+    #     self.window.show()
+
+    # def openDefenderSetup(self):
+    #     self.setEnabled(False)
+    #     self.window = setupMainWindow()
+    #     self.window.defenderSetup(self)
+    #     self.window.setWindowTitle('Defender Setup')
+    #     self.window.show()
+
+    # def openGoalkeeperSetup(self):
+    #     self.setEnabled(False)
+    #     self.window = setupMainWindow()
+    #     self.window.goalkeeperSetup(self)
+    #     self.window.setWindowTitle('Goalkeeper Setup')
+    #     self.window.show()
+
+    def kickoffM(self):
+        print("kickoffM")
+    def freekickM(self):
+        print("freekickM")
+    def goalkickM(self):
+        print("freekickM")
+    def cornerM(self):
+        print("cornerM")
+    def penaltyM(self):
+        print("penaltyM")
+    def goalM(self):
+        print("goalM")
+    
+    def kickoffC(self):
+        if self.robotTeam == "C":
+            self.robotGoalPublish("striker", 5.25402927399, 4.76900291443, -0.711607695391, 0.702577033399)
+        elif self.robotTeam == "M":
+            self.robotGoalPublish("striker", 6.61199522018, 2.70544242859, 0.928864407302, 0.370419914215)
+    def freekickC(self):
+        if self.robotTeam == "C":
+            self.robotGoalPublish("striker", 3.73551344872, 2.82067728043, 0.257607173491, 0.966249731781)
+        elif self.robotTeam == "M":
+            self.robotGoalPublish("striker", 6.61199522018, 2.70544242859, 0.928864407302, 0.370419914215)
+    def goalkickC(self):
+        if self.robotTeam == "C":
+            self.robotGoalPublish("striker", 2.31663513184, 3.87645721436, 0.0, 1)
+        elif self.robotTeam == "M":
+            self.robotGoalPublish("striker", 6.61199522018, 2.70544242859, 0.928864407302, 0.370419914215)
+    def cornerC(self):
+        if self.robotTeam == "C":
+            self.robotGoalPublish("striker", 9.77654838562, 6.95783042908, 0.909825772742, -0.414990437545)
+        elif self.robotTeam == "M":
+            self.robotGoalPublish("striker", 6.61199522018, 2.70544242859, 0.928864407302, 0.370419914215)
+    def penaltyC(self):
+        if self.robotTeam == "C":
+            self.robotGoalPublish("striker", 1743 * 0.0025, 1526 * 0.0025, 1, 0)
+    def goalC(self):
+        print("Cyan Goal")
+
+    def startReferee(self):
+        print("startReferee")
+    def stopReferee(self):
+        print("stopReferee")
+    def dropballReferee(self):
+        print("dropballReferee")
+    def endReferee(self):
+        print("endReferee")
+    def resetReferee(self):
+        print("resetReferee")
+
+    def changeTeam(self):
+        if self.teamCyan.isChecked():
+            self.robotTeam = 'C'
+        elif self.teamMagenta.isChecked():
+            self.robotTeam = 'M'
+            
+    def updateFieldThread(self):
+        worker = Worker(self.updateField)
+        self.threadpool.start(worker) 
 
     def updateField(self):
         self.image = cv2.imread(self.path + '/media/field.png')
         height, width = self.image.shape[:2]
         
-        if self.mouseClickInFieldArea and (self.robotNav or self.robotPoseEstimate):
+        if self.mouseClickInFieldArea:
             self.image = cv2.line(self.image, (self.mouseClickPos[1], self.mouseClickPos[0]), (self.mouseMovePos[1], self.mouseMovePos[0]), (0, 0, 255), 20)
         
-        orientation_list = [self.robotPose.orientation.x, self.robotPose.orientation.y, self.robotPose.orientation.z, self.robotPose.orientation.w]
+        try:
+            self.robotPose = self.listener.lookupTransform('/map', '/base_link', rospy.Time(0))
+        except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
+            None
+
+        orientation_list = [self.robotPose[1][0], self.robotPose[1][1], self.robotPose[1][2], self.robotPose[1][3]]
         (r, p, y) = euler_from_quaternion(orientation_list)
         
         heading = ((y / (2 * np.pi)) * 360)
         cosHeading = np.cos(np.radians(heading))
         sinHeading = np.sin(np.radians(heading))
-        posX = int(self.robotPose.position.y / 0.0025)
-        posY = int(self.robotPose.position.x / 0.0025)
+        posX = int(self.robotPose[0][1] / 0.0025)
+        posY = int(self.robotPose[0][0] / 0.0025)
 
-        self.image = cv2.circle(self.image, (posX, posY), 100, (255, 0, 0), -1)
-        self.image = cv2.line(self.image, (posX, posY), (posX + int(sinHeading * 100), posY + int(cosHeading * 100)), (0, 0, 255), 20)
         self.image = cv2.resize(self.image, (int(width / 7), int(height / 7)))
+        self.image = cv2.circle(self.image, (int(posX / 7), int(posY / 7)), int(100 / 7), (0, 0, 255), -1)
+        self.image = cv2.line(self.image, (int(posX / 7), int(posY / 7)), (int(posX / 7) + int(sinHeading * int(100 / 7)), int(posY / 7) + int(cosHeading * int(100 / 7))), (255, 255, 255), int(20 / 7))
 
         self.fieldImage(self.image, 1)
         
@@ -115,9 +255,33 @@ class rostu(QWidget):
             self.field.setPixmap(QPixmap.fromImage(outImage))
             self.field.installEventFilter(self)
 
-    def updateFieldThread(self):
-        worker = Worker(self.updateField)
-        self.threadpool.start(worker) 
+    def robotGoalPublish(self, robot, x, y, z, w):
+        goal_publish_msg = PoseStamped()
+        goal_publish_msg.header.frame_id = "map"
+        goal_publish_msg.pose.position.x = x
+        goal_publish_msg.pose.position.y = y
+        goal_publish_msg.pose.orientation.z = z
+        goal_publish_msg.pose.orientation.w = w
+        if robot == "striker":
+            striker_publish_goal.publish(goal_publish_msg)
+        elif robot == "defender":
+            striker_publish_goal.publish(goal_publish_msg)
+        elif robot == "goalkeeper":
+            striker_publish_goal.publish(goal_publish_msg)
+
+    def robotPoseEstimation(self, robot, x, y, z, w):
+        pose_estimate_publish_msg = PoseWithCovarianceStamped()
+        pose_estimate_publish_msg.header.frame_id = "map"
+        pose_estimate_publish_msg.pose.pose.position.x = x
+        pose_estimate_publish_msg.pose.pose.position.y = y
+        pose_estimate_publish_msg.pose.pose.orientation.z = z
+        pose_estimate_publish_msg.pose.pose.orientation.w = w
+        if robot == "striker":
+            striker_pose_estimate.publish(pose_estimate_publish_msg)
+        elif robot == "defender":
+            striker_pose_estimate.publish(pose_estimate_publish_msg)
+        elif robot == "goalkeeper":
+            striker_pose_estimate.publish(pose_estimate_publish_msg)
 
     def strikerNavCall(self):
         self.robotNav = True
@@ -125,7 +289,8 @@ class rostu(QWidget):
         self.strikerNav = True
         self.striker.setStyleSheet("""
             #striker{
-                background-color: rgb(0, 170, 0)
+                color: rgb(255, 0, 0);
+                background-color: rgb(0, 170, 0);
             }
         """)
 
@@ -135,7 +300,8 @@ class rostu(QWidget):
         self.strikerPoseEstimate = True
         self.striker.setStyleSheet("""
             #striker{
-                background-color: rgb(0, 170, 0)
+                color: rgb(255, 0, 0);
+                background-color: rgb(0, 170, 0);
             }
         """)
 
@@ -145,7 +311,8 @@ class rostu(QWidget):
         self.defenderNav = True
         self.defender.setStyleSheet("""
             #defender{
-                background-color: rgb(0, 170, 0)
+                color: rgb(0, 255, 0);
+                background-color: rgb(0, 170, 0);
             }
         """)
 
@@ -155,7 +322,8 @@ class rostu(QWidget):
         self.defenderPoseEstimate = True
         self.defender.setStyleSheet("""
             #defender{
-                background-color: rgb(0, 170, 0)
+                color: rgb(0, 255, 0);
+                background-color: rgb(0, 170, 0);
             }
         """)
 
@@ -165,7 +333,8 @@ class rostu(QWidget):
         self.goalkeeperNav = True
         self.goalkeeper.setStyleSheet("""
             #goalkeeper{
-                background-color: rgb(0, 170, 0)
+                color: rgb(0, 0, 255);
+                background-color: rgb(0, 170, 0);
             }
         """)
 
@@ -175,14 +344,27 @@ class rostu(QWidget):
         self.goalkeeperPoseEstimate = True
         self.goalkeeper.setStyleSheet("""
             #goalkeeper{
-                background-color: rgb(0, 170, 0)
+                color: rgb(0, 0, 255);
+                background-color: rgb(0, 170, 0);
             }
         """)
 
     def turnFalse(self):
-        self.striker.setStyleSheet("""""")
-        self.defender.setStyleSheet("""""")
-        self.goalkeeper.setStyleSheet("""""")
+        self.striker.setStyleSheet("""
+            #striker{
+                color: rgb(255, 0, 0);
+            }
+        """)
+        self.defender.setStyleSheet("""
+            #defender{
+                color: rgb(0, 255, 0);
+            }
+        """)
+        self.goalkeeper.setStyleSheet("""
+            #goalkeeper{
+                color: rgb(0, 0, 255);
+            }
+        """)
         self.robotNav = False
         self.robotPoseEstimate = False
         self.strikerNav = False
@@ -204,6 +386,8 @@ class rostu(QWidget):
 
     def mousePressEvent(self, QMouseEvent):
         self.mouseClickPos = [(QMouseEvent.y() - 50) * 7, (QMouseEvent.x() - 10) * 7]
+        self.mouseMovePos[0] = self.mouseClickPos[0]
+        self.mouseMovePos[1] = self.mouseClickPos[1]
         if self.mouseClickPos[0] >= 0 and self.mouseClickPos[1] >= 0 and self.mouseClickPos[0] <= 4201 and self.mouseClickPos[1] <= 3060:
             self.mouseClickInFieldArea = True
         else:
@@ -216,23 +400,9 @@ class rostu(QWidget):
             delta_y = self.mouseReleasePos[1] - self.mouseClickPos[1]
             orientation = quaternion_from_euler(0, 0, np.arctan2(delta_y, delta_x))
             if self.robotNav:
-                goal_publish_msg = PoseStamped()
-                goal_publish_msg.header.frame_id = "map"
-                goal_publish_msg.pose.position.x = self.mouseClickPos[0] * 0.0025
-                goal_publish_msg.pose.position.y = self.mouseClickPos[1] * 0.0025
-                goal_publish_msg.pose.orientation.z = orientation[2]
-                goal_publish_msg.pose.orientation.w = orientation[3]
-                if self.strikerNav:
-                    striker_publish_goal.publish(goal_publish_msg)
+                self.robotGoalPublish("striker", self.mouseClickPos[0] * 0.0025, self.mouseClickPos[1] * 0.0025, orientation[2], orientation[3])
             if self.robotPoseEstimate:
-                pose_estimate_publish_msg = PoseWithCovarianceStamped()
-                pose_estimate_publish_msg.header.frame_id = "map"
-                pose_estimate_publish_msg.pose.pose.position.x = self.mouseClickPos[0] * 0.0025
-                pose_estimate_publish_msg.pose.pose.position.y = self.mouseClickPos[1] * 0.0025
-                pose_estimate_publish_msg.pose.pose.orientation.z = orientation[2]
-                pose_estimate_publish_msg.pose.pose.orientation.w = orientation[3]
-                if self.strikerPoseEstimate:
-                    striker_pose_estimate.publish(pose_estimate_publish_msg)
+                self.robotPoseEstimation("striker", self.mouseClickPos[0] * 0.0025, self.mouseClickPos[1] * 0.0025, orientation[2], orientation[3])
         self.turnFalse()
 
     def mouseMoveEvent(self, event):
@@ -251,16 +421,19 @@ class rostu(QWidget):
             else:
                 self.mouseMovePos[0] = (event.y() - 50) * 7
 
-            self.xy_coor.setText('X & Y : ( %d : %d )' % (self.mouseMovePos[0], self.mouseMovePos[1]))
+            delta_x = self.mouseMovePos[0] - self.mouseClickPos[0]
+            delta_y = self.mouseMovePos[1] - self.mouseClickPos[1]
+            orientation = quaternion_from_euler(0, 0, np.arctan2(delta_y, delta_x))
+            self.xy_coor.setText('X & Y & Z & W : ( %f : %f : %f : %f )' % (self.mouseClickPos[0] * 0.0025, self.mouseClickPos[1] * 0.0025, orientation[2], orientation[3])) 
 
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = rostu()
-    window.setWindowTitle('ROSTU')
-    window.show()
-
     rospy.init_node('rostu_gui')
     striker_publish_goal = rospy.Publisher('move_base_simple/goal', PoseStamped, queue_size=1)  
     striker_pose_estimate = rospy.Publisher('initialpose', PoseWithCovarianceStamped, queue_size=1)    
 
+    app = QApplication(sys.argv)
+    window = MainWindow()
+    window.setWindowTitle('ROSTU')
+    window.show()
+    
     sys.exit(app.exec_())

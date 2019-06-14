@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1280</width>
-    <height>680</height>
+    <height>679</height>
    </rect>
   </property>
   <property name="palette">
@@ -109,12 +109,12 @@
     <rect>
      <x>0</x>
      <y>660</y>
-     <width>271</width>
+     <width>541</width>
      <height>18</height>
     </rect>
    </property>
    <property name="text">
-    <string>X &amp; Y : </string>
+    <string>X &amp; Y &amp; Z &amp; W : </string>
    </property>
   </widget>
   <widget class="QLabel" name="field">
@@ -1332,6 +1332,19 @@
      </item>
     </layout>
    </widget>
+   <widget class="QPushButton" name="refereeSetup">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>10</y>
+      <width>20</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>S</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QGroupBox" name="groupBox_2">
    <property name="geometry">
@@ -1357,6 +1370,11 @@
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <widget class="QGroupBox" name="defender">
+       <property name="styleSheet">
+        <string notr="true">#defender {
+	color: rgb(0, 255, 0)
+}</string>
+       </property>
        <property name="title">
         <string>Defender</string>
        </property>
@@ -1386,7 +1404,7 @@
          </item>
         </layout>
        </widget>
-       <widget class="QPushButton" name="pushButton_2">
+       <widget class="QPushButton" name="defenderSetup">
         <property name="geometry">
          <rect>
           <x>140</x>
@@ -1396,13 +1414,35 @@
          </rect>
         </property>
         <property name="text">
+         <string>S</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="defenderCheck">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>21</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
          <string/>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </widget>
      </item>
      <item>
       <widget class="QGroupBox" name="goalkeeper">
+       <property name="styleSheet">
+        <string notr="true">#goalkeeper {
+	color: rgb(0, 0, 255
+)
+}</string>
+       </property>
        <property name="title">
         <string>Goalkeeper</string>
        </property>
@@ -1432,7 +1472,7 @@
          </item>
         </layout>
        </widget>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="goalkeeperSetup">
         <property name="geometry">
          <rect>
           <x>140</x>
@@ -1442,7 +1482,23 @@
          </rect>
         </property>
         <property name="text">
+         <string>S</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="goalkeeperCheck">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>21</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
          <string/>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </widget>
@@ -1451,6 +1507,11 @@
       <widget class="QGroupBox" name="striker">
        <property name="autoFillBackground">
         <bool>true</bool>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#striker {
+	color: rgb(255, 0, 0)
+}</string>
        </property>
        <property name="title">
         <string>Striker</string>
@@ -1481,7 +1542,7 @@
          </item>
         </layout>
        </widget>
-       <widget class="QPushButton" name="pushButton_3">
+       <widget class="QPushButton" name="strikerSetup">
         <property name="geometry">
          <rect>
           <x>140</x>
@@ -1491,7 +1552,23 @@
          </rect>
         </property>
         <property name="text">
+         <string>S</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="strikerCheck">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>21</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
          <string/>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </widget>
@@ -1693,14 +1770,14 @@
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
-     <widget class="QRadioButton" name="radioButton_2">
+     <widget class="QRadioButton" name="teamCyan">
       <property name="text">
        <string>Cyan</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QRadioButton" name="radioButton">
+     <widget class="QRadioButton" name="teamMagenta">
       <property name="text">
        <string>Magenta</string>
       </property>
@@ -1762,17 +1839,216 @@
     </property>
    </widget>
   </widget>
-  <widget class="QLabel" name="xy_coor_2">
+  <widget class="QPushButton" name="cornerLeft">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
-     <x>350</x>
-     <y>660</y>
-     <width>271</width>
-     <height>18</height>
+     <x>40</x>
+     <y>340</y>
+     <width>169</width>
+     <height>34</height>
     </rect>
    </property>
+   <property name="palette">
+    <palette>
+     <active>
+      <colorrole role="Button">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>120</red>
+         <green>18</green>
+         <blue>118</blue>
+        </color>
+       </brush>
+      </colorrole>
+     </active>
+     <inactive>
+      <colorrole role="Button">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>120</red>
+         <green>18</green>
+         <blue>118</blue>
+        </color>
+       </brush>
+      </colorrole>
+     </inactive>
+     <disabled>
+      <colorrole role="Button">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>120</red>
+         <green>18</green>
+         <blue>118</blue>
+        </color>
+       </brush>
+      </colorrole>
+     </disabled>
+    </palette>
+   </property>
    <property name="text">
-    <string>X &amp; Y : </string>
+    <string>LEFT</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="cornerRight">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>250</x>
+     <y>340</y>
+     <width>169</width>
+     <height>34</height>
+    </rect>
+   </property>
+   <property name="palette">
+    <palette>
+     <active>
+      <colorrole role="Button">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>72</red>
+         <green>175</green>
+         <blue>172</blue>
+        </color>
+       </brush>
+      </colorrole>
+     </active>
+     <inactive>
+      <colorrole role="Button">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>72</red>
+         <green>175</green>
+         <blue>172</blue>
+        </color>
+       </brush>
+      </colorrole>
+     </inactive>
+     <disabled>
+      <colorrole role="Button">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>72</red>
+         <green>175</green>
+         <blue>172</blue>
+        </color>
+       </brush>
+      </colorrole>
+     </disabled>
+    </palette>
+   </property>
+   <property name="text">
+    <string>RIGHT</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="penaltyUp">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>290</y>
+     <width>169</width>
+     <height>34</height>
+    </rect>
+   </property>
+   <property name="palette">
+    <palette>
+     <active>
+      <colorrole role="Button">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>120</red>
+         <green>18</green>
+         <blue>118</blue>
+        </color>
+       </brush>
+      </colorrole>
+     </active>
+     <inactive>
+      <colorrole role="Button">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>120</red>
+         <green>18</green>
+         <blue>118</blue>
+        </color>
+       </brush>
+      </colorrole>
+     </inactive>
+     <disabled>
+      <colorrole role="Button">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>120</red>
+         <green>18</green>
+         <blue>118</blue>
+        </color>
+       </brush>
+      </colorrole>
+     </disabled>
+    </palette>
+   </property>
+   <property name="text">
+    <string>UP</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="penaltyBot">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>390</y>
+     <width>169</width>
+     <height>34</height>
+    </rect>
+   </property>
+   <property name="palette">
+    <palette>
+     <active>
+      <colorrole role="Button">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>72</red>
+         <green>175</green>
+         <blue>172</blue>
+        </color>
+       </brush>
+      </colorrole>
+     </active>
+     <inactive>
+      <colorrole role="Button">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>72</red>
+         <green>175</green>
+         <blue>172</blue>
+        </color>
+       </brush>
+      </colorrole>
+     </inactive>
+     <disabled>
+      <colorrole role="Button">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>72</red>
+         <green>175</green>
+         <blue>172</blue>
+        </color>
+       </brush>
+      </colorrole>
+     </disabled>
+    </palette>
+   </property>
+   <property name="text">
+    <string>BOT</string>
    </property>
   </widget>
  </widget>
