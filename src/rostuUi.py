@@ -153,41 +153,138 @@ class rostuWidget(QWidget):
     #     self.window.show()
 
     def kickoffM(self):
-        print("kickoffM")
+        coorStriker = [0, 0, 0, 0]
+        coorDefender = [0, 0, 0, 0]
+        coorGoalkeeper = [0, 0, 0, 0]
+        if self.robotTeam == "M":
+            coorStriker = self.refereeCommand["kickoff_M_S_T"]
+            coorDefender = self.refereeCommand["kickoff_M_D_T"]
+            coorGoalkeeper = self.refereeCommand["kickoff_M_G_T"]
+        elif self.robotTeam == "C":
+            coorStriker = self.refereeCommand["kickoff_M_S_E"]
+            coorDefender = self.refereeCommand["kickoff_M_D_E"]
+            coorGoalkeeper = self.refereeCommand["kickoff_M_G_E"]
+        self.robotGoalPublish("striker", coorStriker[0], coorStriker[1], coorStriker[2], coorStriker[3])
+        # self.robotGoalPublish("defender", coorDefender[0], coorDefender[1], coorDefender[2], coorDefender[3])
+        # self.robotGoalPublish("goalkeeper", coorGoalkeeper[0], coorGoalkeeper[1], coorGoalkeeper[2], coorGoalkeeper[3])
     def freekickM(self):
-        print("freekickM")
+        coorStriker = [0, 0, 0, 0]
+        coorDefender = [0, 0, 0, 0]
+        coorGoalkeeper = [0, 0, 0, 0]
+        if self.robotTeam == "M":
+            coorStriker = self.refereeCommand["freekick_M_S_T"]
+            coorDefender = self.refereeCommand["freekick_M_D_T"]
+            coorGoalkeeper = self.refereeCommand["freekick_M_G_T"]
+        elif self.robotTeam == "C":
+            coorStriker = self.refereeCommand["freekick_M_S_E"]
+            coorDefender = self.refereeCommand["freekick_M_D_E"]
+            coorGoalkeeper = self.refereeCommand["freekick_M_G_E"]
+        self.robotGoalPublish("striker", coorStriker[0], coorStriker[1], coorStriker[2], coorStriker[3])
+        # self.robotGoalPublish("defender", coorDefender[0], coorDefender[1], coorDefender[2], coorDefender[3])
+        # self.robotGoalPublish("goalkeeper", coorGoalkeeper[0], coorGoalkeeper[1], coorGoalkeeper[2], coorGoalkeeper[3])
     def goalkickM(self):
-        print("freekickM")
+        coorStriker = [0, 0, 0, 0]
+        coorDefender = [0, 0, 0, 0]
+        coorGoalkeeper = [0, 0, 0, 0]
+        if self.robotTeam == "M":
+            coorStriker = self.refereeCommand["goalkick_M_S_T"]
+            coorDefender = self.refereeCommand["goalkick_M_D_T"]
+            coorGoalkeeper = self.refereeCommand["goalkick_M_G_T"]
+        elif self.robotTeam == "C":
+            coorStriker = self.refereeCommand["goalkick_M_S_E"]
+            coorDefender = self.refereeCommand["goalkick_M_D_E"]
+            coorGoalkeeper = self.refereeCommand["goalkick_M_G_E"]
+        self.robotGoalPublish("striker", coorStriker[0], coorStriker[1], coorStriker[2], coorStriker[3])
+        # self.robotGoalPublish("defender", coorDefender[0], coorDefender[1], coorDefender[2], coorDefender[3])
+        # self.robotGoalPublish("goalkeeper", coorGoalkeeper[0], coorGoalkeeper[1], coorGoalkeeper[2], coorGoalkeeper[3])
     def cornerM(self):
-        print("cornerM")
+        coorStriker = [0, 0, 0, 0]
+        coorDefender = [0, 0, 0, 0]
+        coorGoalkeeper = [0, 0, 0, 0]
+        if self.robotTeam == "M":
+            coorStriker = self.refereeCommand["corner_M_S_T"]
+            coorDefender = self.refereeCommand["corner_M_D_T"]
+            coorGoalkeeper = self.refereeCommand["corner_M_G_T"]
+        elif self.robotTeam == "C":
+            coorStriker = self.refereeCommand["corner_M_S_E"]
+            coorDefender = self.refereeCommand["corner_M_D_E"]
+            coorGoalkeeper = self.refereeCommand["corner_M_G_E"]
+        self.robotGoalPublish("striker", coorStriker[0], coorStriker[1], coorStriker[2], coorStriker[3])
+        # self.robotGoalPublish("defender", coorDefender[0], coorDefender[1], coorDefender[2], coorDefender[3])
+        # self.robotGoalPublish("goalkeeper", coorGoalkeeper[0], coorGoalkeeper[1], coorGoalkeeper[2], coorGoalkeeper[3])
     def penaltyM(self):
-        print("penaltyM")
+        coorStriker = [0, 0, 0, 0]
+        if self.robotTeam == "M":
+            coorStriker = self.refereeCommand["penalty_M_S_"]
+        self.robotGoalPublish("striker", coorStriker[0], coorStriker[1], coorStriker[2], coorStriker[3])
     def goalM(self):
         print("goalM")
     
     def kickoffC(self):
+        coorStriker = [0, 0, 0, 0]
+        coorDefender = [0, 0, 0, 0]
+        coorGoalkeeper = [0, 0, 0, 0]
         if self.robotTeam == "C":
-            self.robotGoalPublish("striker", 5.25402927399, 4.76900291443, -0.711607695391, 0.702577033399)
+            coorStriker = self.refereeCommand["kickoff_C_S_T"]
+            coorDefender = self.refereeCommand["kickoff_C_D_T"]
+            coorGoalkeeper = self.refereeCommand["kickoff_C_G_T"]
         elif self.robotTeam == "M":
-            self.robotGoalPublish("striker", 6.61199522018, 2.70544242859, 0.928864407302, 0.370419914215)
+            coorStriker = self.refereeCommand["kickoff_C_S_E"]
+            coorDefender = self.refereeCommand["kickoff_C_D_E"]
+            coorGoalkeeper = self.refereeCommand["kickoff_C_G_E"]
+        self.robotGoalPublish("striker", coorStriker[0], coorStriker[1], coorStriker[2], coorStriker[3])
+        # self.robotGoalPublish("defender", coorDefender[0], coorDefender[1], coorDefender[2], coorDefender[3])
+        # self.robotGoalPublish("goalkeeper", coorGoalkeeper[0], coorGoalkeeper[1], coorGoalkeeper[2], coorGoalkeeper[3])
     def freekickC(self):
+        coorStriker = [0, 0, 0, 0]
+        coorDefender = [0, 0, 0, 0]
+        coorGoalkeeper = [0, 0, 0, 0]
         if self.robotTeam == "C":
-            self.robotGoalPublish("striker", 3.73551344872, 2.82067728043, 0.257607173491, 0.966249731781)
+            coorStriker = self.refereeCommand["freekick_C_S_T"]
+            coorDefender = self.refereeCommand["freekick_C_D_T"]
+            coorGoalkeeper = self.refereeCommand["freekick_C_G_T"]
         elif self.robotTeam == "M":
-            self.robotGoalPublish("striker", 6.61199522018, 2.70544242859, 0.928864407302, 0.370419914215)
+            coorStriker = self.refereeCommand["freekick_C_S_E"]
+            coorDefender = self.refereeCommand["freekick_C_D_E"]
+            coorGoalkeeper = self.refereeCommand["freekick_C_G_E"]
+        self.robotGoalPublish("striker", coorStriker[0], coorStriker[1], coorStriker[2], coorStriker[3])
+        # self.robotGoalPublish("defender", coorDefender[0], coorDefender[1], coorDefender[2], coorDefender[3])
+        # self.robotGoalPublish("goalkeeper", coorGoalkeeper[0], coorGoalkeeper[1], coorGoalkeeper[2], coorGoalkeeper[3])
     def goalkickC(self):
+        coorStriker = [0, 0, 0, 0]
+        coorDefender = [0, 0, 0, 0]
+        coorGoalkeeper = [0, 0, 0, 0]
         if self.robotTeam == "C":
-            self.robotGoalPublish("striker", 2.31663513184, 3.87645721436, 0.0, 1)
+            coorStriker = self.refereeCommand["goalkick_C_S_T"]
+            coorDefender = self.refereeCommand["goalkick_C_D_T"]
+            coorGoalkeeper = self.refereeCommand["goalkick_C_G_T"]
         elif self.robotTeam == "M":
-            self.robotGoalPublish("striker", 6.61199522018, 2.70544242859, 0.928864407302, 0.370419914215)
+            coorStriker = self.refereeCommand["goalkick_C_S_E"]
+            coorDefender = self.refereeCommand["goalkick_C_D_E"]
+            coorGoalkeeper = self.refereeCommand["goalkick_C_G_E"]
+        self.robotGoalPublish("striker", coorStriker[0], coorStriker[1], coorStriker[2], coorStriker[3])
+        # self.robotGoalPublish("defender", coorDefender[0], coorDefender[1], coorDefender[2], coorDefender[3])
+        # self.robotGoalPublish("goalkeeper", coorGoalkeeper[0], coorGoalkeeper[1], coorGoalkeeper[2], coorGoalkeeper[3])
     def cornerC(self):
+        coorStriker = [0, 0, 0, 0]
+        coorDefender = [0, 0, 0, 0]
+        coorGoalkeeper = [0, 0, 0, 0]
         if self.robotTeam == "C":
-            self.robotGoalPublish("striker", 9.77654838562, 6.95783042908, 0.909825772742, -0.414990437545)
+            coorStriker = self.refereeCommand["corner_C_S_T"]
+            coorDefender = self.refereeCommand["corner_C_D_T"]
+            coorGoalkeeper = self.refereeCommand["corner_C_G_T"]
         elif self.robotTeam == "M":
-            self.robotGoalPublish("striker", 6.61199522018, 2.70544242859, 0.928864407302, 0.370419914215)
+            coorStriker = self.refereeCommand["corner_C_S_E"]
+            coorDefender = self.refereeCommand["corner_C_D_E"]
+            coorGoalkeeper = self.refereeCommand["corner_C_G_E"]
+        self.robotGoalPublish("striker", coorStriker[0], coorStriker[1], coorStriker[2], coorStriker[3])
+        # self.robotGoalPublish("defender", coorDefender[0], coorDefender[1], coorDefender[2], coorDefender[3])
+        # self.robotGoalPublish("goalkeeper", coorGoalkeeper[0], coorGoalkeeper[1], coorGoalkeeper[2], coorGoalkeeper[3])
     def penaltyC(self):
+        coorStriker = [0, 0, 0, 0]
         if self.robotTeam == "C":
-            self.robotGoalPublish("striker", 1743 * 0.0025, 1526 * 0.0025, 1, 0)
+            coorStriker = self.refereeCommand["penalty_C_S_"]
+        self.robotGoalPublish("striker", coorStriker[0], coorStriker[1], coorStriker[2], coorStriker[3])
     def goalC(self):
         print("Cyan Goal")
 
@@ -196,7 +293,18 @@ class rostuWidget(QWidget):
     def stopReferee(self):
         print("stopReferee")
     def dropballReferee(self):
-        print("dropballReferee")
+        coorStriker = [0, 0, 0, 0]
+        if self.robotTeam == "C":
+            coorStriker = self.refereeCommand["dropball_C_S_"]
+            coorDefender = self.refereeCommand["dropball_C_D_"]
+            coorGoalkeeper = self.refereeCommand["dropball_C_G_"]
+        elif self.robotTeam == "M":
+            coorStriker = self.refereeCommand["dropball_M_S_"]
+            coorDefender = self.refereeCommand["dropball_M_D_"]
+            coorGoalkeeper = self.refereeCommand["dropball_M_G_"]
+        self.robotGoalPublish("striker", coorStriker[0], coorStriker[1], coorStriker[2], coorStriker[3])
+        # self.robotGoalPublish("defender", coorDefender[0], coorDefender[1], coorDefender[2], coorDefender[3])
+        # self.robotGoalPublish("goalkeeper", coorGoalkeeper[0], coorGoalkeeper[1], coorGoalkeeper[2], coorGoalkeeper[3])
     def endReferee(self):
         print("endReferee")
     def resetReferee(self):
@@ -264,10 +372,10 @@ class rostuWidget(QWidget):
         goal_publish_msg.pose.orientation.w = w
         if robot == "striker":
             striker_publish_goal.publish(goal_publish_msg)
-        elif robot == "defender":
-            striker_publish_goal.publish(goal_publish_msg)
-        elif robot == "goalkeeper":
-            striker_publish_goal.publish(goal_publish_msg)
+        # elif robot == "defender":
+            # defender_publish_goal.publish(goal_publish_msg)
+        # elif robot == "goalkeeper":
+            # goalkeeper_publish_goal.publish(goal_publish_msg)
 
     def robotPoseEstimation(self, robot, x, y, z, w):
         pose_estimate_publish_msg = PoseWithCovarianceStamped()
@@ -278,10 +386,10 @@ class rostuWidget(QWidget):
         pose_estimate_publish_msg.pose.pose.orientation.w = w
         if robot == "striker":
             striker_pose_estimate.publish(pose_estimate_publish_msg)
-        elif robot == "defender":
-            striker_pose_estimate.publish(pose_estimate_publish_msg)
-        elif robot == "goalkeeper":
-            striker_pose_estimate.publish(pose_estimate_publish_msg)
+        # elif robot == "defender":
+        #     defender_pose_estimate.publish(pose_estimate_publish_msg)
+        # elif robot == "goalkeeper":
+        #     goalkeeper_pose_estimate.publish(pose_estimate_publish_msg)
 
     def strikerNavCall(self):
         self.robotNav = True
@@ -293,7 +401,6 @@ class rostuWidget(QWidget):
                 background-color: rgb(0, 170, 0);
             }
         """)
-
     def strikerPoseCall(self):
         self.robotNav = False
         self.robotPoseEstimate = True
@@ -304,7 +411,6 @@ class rostuWidget(QWidget):
                 background-color: rgb(0, 170, 0);
             }
         """)
-
     def defenderNavCall(self):
         self.robotNav = True
         self.robotPoseEstimate = False
@@ -315,7 +421,6 @@ class rostuWidget(QWidget):
                 background-color: rgb(0, 170, 0);
             }
         """)
-
     def defenderPoseCall(self):
         self.robotNav = False
         self.robotPoseEstimate = True
@@ -326,7 +431,6 @@ class rostuWidget(QWidget):
                 background-color: rgb(0, 170, 0);
             }
         """)
-
     def goalkeeperNavCall(self):
         self.robotNav = True
         self.robotPoseEstimate = False
@@ -337,7 +441,6 @@ class rostuWidget(QWidget):
                 background-color: rgb(0, 170, 0);
             }
         """)
-
     def goalkeeperPoseCall(self):
         self.robotNav = False
         self.robotPoseEstimate = True
@@ -429,7 +532,11 @@ class rostuWidget(QWidget):
 if __name__ == "__main__":
     rospy.init_node('rostu_gui')
     striker_publish_goal = rospy.Publisher('move_base_simple/goal', PoseStamped, queue_size=1)  
-    striker_pose_estimate = rospy.Publisher('initialpose', PoseWithCovarianceStamped, queue_size=1)    
+    striker_pose_estimate = rospy.Publisher('initialpose', PoseWithCovarianceStamped, queue_size=1)   
+    # defender_publish_goal = rospy.Publisher('defender/move_base_simple/goal', PoseStamped, queue_size=1)  
+    # defender_pose_estimate = rospy.Publisher('defender/initialpose', PoseWithCovarianceStamped, queue_size=1)   
+    # goalkeeper_publish_goal = rospy.Publisher('goalkeeper/move_base_simple/goal', PoseStamped, queue_size=1)  
+    # goalkeeper_pose_estimate = rospy.Publisher('goalkeeper/initialpose', PoseWithCovarianceStamped, queue_size=1)    
 
     app = QApplication(sys.argv)
     window = MainWindow()

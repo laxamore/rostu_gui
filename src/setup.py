@@ -55,7 +55,7 @@ class referee(QWidget):
         self.w.setValidator(QDoubleValidator(-100, 100, 10, self))
         self.refereeCommand = refereeCommand
 
-        self.param = [None, None, None]
+        self.param = ['', '', '', '']
 
         self.initButton()
 
@@ -83,32 +83,43 @@ class referee(QWidget):
         self.penaltyBtnC.clicked.connect(self.penaltyC)
         self.dropballBtnC.clicked.connect(self.dropballC)
 
+        self.enemy.clicked.connect(self.enemySide)
+        self.team.clicked.connect(self.teamSide)
+
 
     def closeIt(self):
         self.parent().close()
 
     def strikerParam(self):
         self.referee.setEnabled(True)
+        self.enemy.setEnabled(False)
+        self.team.setEnabled(False)
         self.coordinates.setEnabled(False)
         self.param[0] = 'S'
         self.set.setText('Set : ' + self.param[0]) 
     def defenderParam(self):
         self.referee.setEnabled(True)
+        self.enemy.setEnabled(False)
+        self.team.setEnabled(False)
         self.coordinates.setEnabled(False)
         self.param[0] = 'D'
         self.set.setText('Set : ' + self.param[0]) 
     def goalkeeperParam(self):
         self.referee.setEnabled(True)
+        self.enemy.setEnabled(False)
+        self.team.setEnabled(False)
         self.coordinates.setEnabled(False)
         self.param[0] = 'G'
         self.set.setText('Set : ' + self.param[0]) 
 
     def saveCoor(self):
-        self.parent().parent().writeRefereeCommand(self.param[2] + "_" + self.param[1] + "_" + self.param[0], 
-                                                   [float(self.x.text()), float(self.y.text()), float(self.w.text()), float(self.z.text())])
+        self.parent().parent().writeRefereeCommand(self.param[2] + "_" + self.param[1] + "_" + self.param[0] + "_" + self.param[3], 
+                                                   [float(self.x.text()), float(self.y.text()), float(self.z.text()), float(self.w.text())])
         self.referee.setEnabled(False)
         self.coordinates.setEnabled(False)
-        self.param = [None, None, None]
+        self.enemy.setEnabled(False)
+        self.team.setEnabled(False)
+        self.param = ['', '', '', '']
         self.set.setText('Set : ')
 
     def loadCoor(self):
@@ -127,123 +138,131 @@ class referee(QWidget):
             self.z.setText(string[2])
             self.w.setText(string[3])
 
-    def kickoffM(self):
+    def enemySide(self):
         self.coordinates.setEnabled(True)
+        self.param[3] = 'E'
+        self.set.setText('Set : ' + self.param[0] + ' >> ' + self.param[1] + ' >> ' + self.param[2] + ' >> ' + self.param[3]) 
+        coor = self.refereeCommand[self.param[2] + "_" + self.param[1] + "_" + self.param[0] + "_" + self.param[3]]
+        self.x.setText(str(coor[0]))
+        self.y.setText(str(coor[1]))
+        self.z.setText(str(coor[2]))
+        self.w.setText(str(coor[3]))
+
+    def teamSide(self):
+        self.coordinates.setEnabled(True)
+        self.param[3] = 'T'
+        self.set.setText('Set : ' + self.param[0] + ' >> ' + self.param[1] + ' >> ' + self.param[2] + ' >> ' + self.param[3]) 
+        coor = self.refereeCommand[self.param[2] + "_" + self.param[1] + "_" + self.param[0] + "_" + self.param[3]]
+        self.x.setText(str(coor[0]))
+        self.y.setText(str(coor[1]))
+        self.z.setText(str(coor[2]))
+        self.w.setText(str(coor[3]))
+
+    def kickoffM(self):
+        self.coordinates.setEnabled(False)
+        self.enemy.setEnabled(True)
+        self.team.setEnabled(True)
         self.param[1] = 'M'
         self.param[2] = 'kickoff'
         self.set.setText('Set : ' + self.param[0] + ' >> ' + self.param[1] + ' >> ' + self.param[2]) 
-        coor = self.refereeCommand[self.param[2] + "_" + self.param[1] + "_" + self.param[0]]
-        self.x.setText(str(coor[0]))
-        self.y.setText(str(coor[1]))
-        self.z.setText(str(coor[2]))
-        self.w.setText(str(coor[3]))
     def freekickM(self):
-        self.coordinates.setEnabled(True)
+        self.coordinates.setEnabled(False)
+        self.enemy.setEnabled(True)
+        self.team.setEnabled(True)
         self.param[1] = 'M'
         self.param[2] = 'freekick'
         self.set.setText('Set : ' + self.param[0] + ' >> ' + self.param[1] + ' >> ' + self.param[2]) 
-        coor = self.refereeCommand[self.param[2] + "_" + self.param[1] + "_" + self.param[0]]
-        self.x.setText(str(coor[0]))
-        self.y.setText(str(coor[1]))
-        self.z.setText(str(coor[2]))
-        self.w.setText(str(coor[3]))
     def goalkickM(self):
-        self.coordinates.setEnabled(True)
+        self.coordinates.setEnabled(False)
+        self.enemy.setEnabled(True)
+        self.team.setEnabled(True)
         self.param[1] = 'M'
         self.param[2] = 'goalkick'
         self.set.setText('Set : ' + self.param[0] + ' >> ' + self.param[1] + ' >> ' + self.param[2]) 
-        coor = self.refereeCommand[self.param[2] + "_" + self.param[1] + "_" + self.param[0]]
-        self.x.setText(str(coor[0]))
-        self.y.setText(str(coor[1]))
-        self.z.setText(str(coor[2]))
-        self.w.setText(str(coor[3]))
     def cornerM(self):
-        self.coordinates.setEnabled(True)
+        self.coordinates.setEnabled(False)
+        self.enemy.setEnabled(True)
+        self.team.setEnabled(True)
         self.param[1] = 'M'
         self.param[2] = 'corner'
         self.set.setText('Set : ' + self.param[0] + ' >> ' + self.param[1] + ' >> ' + self.param[2]) 
-        coor = self.refereeCommand[self.param[2] + "_" + self.param[1] + "_" + self.param[0]]
-        self.x.setText(str(coor[0]))
-        self.y.setText(str(coor[1]))
-        self.z.setText(str(coor[2]))
-        self.w.setText(str(coor[3]))
     def penaltyM(self):
+        self.enemy.setEnabled(False)
+        self.team.setEnabled(False)
         self.coordinates.setEnabled(True)
         self.param[1] = 'M'
         self.param[2] = 'penalty'
-        self.set.setText('Set : ' + self.param[0] + ' >> ' + self.param[1] + ' >> ' + self.param[2]) 
-        coor = self.refereeCommand[self.param[2] + "_" + self.param[1] + "_" + self.param[0]]
+        self.param[3] = ''
+        self.set.setText('Set : ' + self.param[0] + ' >> ' + self.param[1] + ' >> ' + self.param[2])
+        coor = self.refereeCommand[self.param[2] + "_" + self.param[1] + "_" + self.param[0] + "_" + self.param[3]]
         self.x.setText(str(coor[0]))
         self.y.setText(str(coor[1]))
         self.z.setText(str(coor[2]))
         self.w.setText(str(coor[3]))
     def dropballM(self):
+        self.enemy.setEnabled(False)
+        self.team.setEnabled(False)
         self.coordinates.setEnabled(True)
         self.param[1] = 'M'
         self.param[2] = 'dropball'
+        self.param[3] = ''
         self.set.setText('Set : ' + self.param[0] + ' >> ' + self.param[1] + ' >> ' + self.param[2]) 
-        coor = self.refereeCommand[self.param[2] + "_" + self.param[1] + "_" + self.param[0]]
+        coor = self.refereeCommand[self.param[2] + "_" + self.param[1] + "_" + self.param[0] + "_" + self.param[3]]
         self.x.setText(str(coor[0]))
         self.y.setText(str(coor[1]))
         self.z.setText(str(coor[2]))
         self.w.setText(str(coor[3]))
 
     def kickoffC(self):
-        self.coordinates.setEnabled(True)
+        self.coordinates.setEnabled(False)
+        self.enemy.setEnabled(True)
+        self.team.setEnabled(True)
         self.param[1] = 'C'
         self.param[2] = 'kickoff'
         self.set.setText('Set : ' + self.param[0] + ' >> ' + self.param[1] + ' >> ' + self.param[2]) 
-        coor = self.refereeCommand[self.param[2] + "_" + self.param[1] + "_" + self.param[0]]
-        self.x.setText(str(coor[0]))
-        self.y.setText(str(coor[1]))
-        self.z.setText(str(coor[2]))
-        self.w.setText(str(coor[3]))
     def freekickC(self):
-        self.coordinates.setEnabled(True)
+        self.coordinates.setEnabled(False)
+        self.enemy.setEnabled(True)
+        self.team.setEnabled(True)
         self.param[1] = 'C'
         self.param[2] = 'freekick'
         self.set.setText('Set : ' + self.param[0] + ' >> ' + self.param[1] + ' >> ' + self.param[2]) 
-        coor = self.refereeCommand[self.param[2] + "_" + self.param[1] + "_" + self.param[0]]
-        self.x.setText(str(coor[0]))
-        self.y.setText(str(coor[1]))
-        self.z.setText(str(coor[2]))
-        self.w.setText(str(coor[3]))
     def goalkickC(self):
-        self.coordinates.setEnabled(True)
+        self.coordinates.setEnabled(False)
+        self.enemy.setEnabled(True)
+        self.team.setEnabled(True)
         self.param[1] = 'C'
         self.param[2] = 'goalkick'
         self.set.setText('Set : ' + self.param[0] + ' >> ' + self.param[1] + ' >> ' + self.param[2]) 
-        coor = self.refereeCommand[self.param[2] + "_" + self.param[1] + "_" + self.param[0]]
-        self.x.setText(str(coor[0]))
-        self.y.setText(str(coor[1]))
-        self.z.setText(str(coor[2]))
-        self.w.setText(str(coor[3]))
     def cornerC(self):
-        self.coordinates.setEnabled(True)
+        self.coordinates.setEnabled(False)
+        self.enemy.setEnabled(True)
+        self.team.setEnabled(True)
         self.param[1] = 'C'
         self.param[2] = 'corner'
         self.set.setText('Set : ' + self.param[0] + ' >> ' + self.param[1] + ' >> ' + self.param[2]) 
-        coor = self.refereeCommand[self.param[2] + "_" + self.param[1] + "_" + self.param[0]]
-        self.x.setText(str(coor[0]))
-        self.y.setText(str(coor[1]))
-        self.z.setText(str(coor[2]))
-        self.w.setText(str(coor[3]))
     def penaltyC(self):
+        self.enemy.setEnabled(False)
+        self.team.setEnabled(False)
         self.coordinates.setEnabled(True)
         self.param[1] = 'C'
         self.param[2] = 'penalty'
+        self.param[3] = ''
         self.set.setText('Set : ' + self.param[0] + ' >> ' + self.param[1] + ' >> ' + self.param[2]) 
-        coor = self.refereeCommand[self.param[2] + "_" + self.param[1] + "_" + self.param[0]]
+        coor = self.refereeCommand[self.param[2] + "_" + self.param[1] + "_" + self.param[0] + "_" + self.param[3]]
         self.x.setText(str(coor[0]))
         self.y.setText(str(coor[1]))
         self.z.setText(str(coor[2]))
         self.w.setText(str(coor[3]))
     def dropballC(self):
+        self.enemy.setEnabled(False)
+        self.team.setEnabled(False)
         self.coordinates.setEnabled(True)
         self.param[1] = 'C'
         self.param[2] = 'dropball'
+        self.param[3] = ''
         self.set.setText('Set : ' + self.param[0] + ' >> ' + self.param[1] + ' >> ' + self.param[2]) 
-        coor = self.refereeCommand[self.param[2] + "_" + self.param[1] + "_" + self.param[0]]
+        coor = self.refereeCommand[self.param[2] + "_" + self.param[1] + "_" + self.param[0] + "_" + self.param[3]]
         self.x.setText(str(coor[0]))
         self.y.setText(str(coor[1]))
         self.z.setText(str(coor[2]))
