@@ -395,60 +395,150 @@ class rostuWidget(QWidget):
         self.robotNav = True
         self.robotPoseEstimate = False
         self.strikerNav = True
+        self.strikerPoseEstimate = False
+        self.defenderNav = False
+        self.defenderPoseEstimate = False
+        self.goalkeeperNav = False
+        self.goalkeeperPoseEstimate = False
         self.striker.setStyleSheet("""
             #striker{
                 color: rgb(255, 0, 0);
                 background-color: rgb(0, 170, 0);
+            }
+        """)
+        self.defender.setStyleSheet("""
+            #defender{
+                color: rgb(0, 255, 0);
+            }
+        """)
+        self.goalkeeper.setStyleSheet("""
+            #goalkeeper{
+                color: rgb(0, 0, 255);
             }
         """)
     def strikerPoseCall(self):
         self.robotNav = False
         self.robotPoseEstimate = True
         self.strikerPoseEstimate = True
+        self.strikerNav = False
+        self.defenderPoseEstimate = False
+        self.defenderNav = False
+        self.goalkeeperPoseEstimate = False
+        self.goalkeeperNav = False
         self.striker.setStyleSheet("""
             #striker{
                 color: rgb(255, 0, 0);
                 background-color: rgb(0, 170, 0);
             }
         """)
+        self.defender.setStyleSheet("""
+            #defender{
+                color: rgb(0, 255, 0);
+            }
+        """)
+        self.goalkeeper.setStyleSheet("""
+            #goalkeeper{
+                color: rgb(0, 0, 255);
+            }
+        """)
     def defenderNavCall(self):
         self.robotNav = True
         self.robotPoseEstimate = False
         self.defenderNav = True
+        self.defenderPoseEstimate = False
+        self.strikerNav = False
+        self.strikerPoseEstimate = False
+        self.goalkeeperNav = False
+        self.goalkeeperPoseEstimate = False
         self.defender.setStyleSheet("""
             #defender{
                 color: rgb(0, 255, 0);
                 background-color: rgb(0, 170, 0);
+            }
+        """)
+        self.striker.setStyleSheet("""
+            #striker{
+                color: rgb(255, 0, 0);
+            }
+        """)
+        self.goalkeeper.setStyleSheet("""
+            #goalkeeper{
+                color: rgb(0, 0, 255);
             }
         """)
     def defenderPoseCall(self):
         self.robotNav = False
         self.robotPoseEstimate = True
         self.defenderPoseEstimate = True
+        self.defenderNav = False
+        self.strikerPoseEstimate = False
+        self.strikerNav = False
+        self.goalkeeperPoseEstimate = False
+        self.goalkeeperNav = False
         self.defender.setStyleSheet("""
             #defender{
                 color: rgb(0, 255, 0);
                 background-color: rgb(0, 170, 0);
             }
         """)
+        self.striker.setStyleSheet("""
+            #striker{
+                color: rgb(255, 0, 0);
+            }
+        """)
+        self.goalkeeper.setStyleSheet("""
+            #goalkeeper{
+                color: rgb(0, 0, 255);
+            }
+        """)
     def goalkeeperNavCall(self):
         self.robotNav = True
         self.robotPoseEstimate = False
         self.goalkeeperNav = True
+        self.goalkeeperPoseEstimate = False
+        self.strikerNav = False
+        self.strikerPoseEstimate = False
+        self.defenderNav = False
+        self.defenderPoseEstimate = False
         self.goalkeeper.setStyleSheet("""
             #goalkeeper{
                 color: rgb(0, 0, 255);
                 background-color: rgb(0, 170, 0);
             }
         """)
+        self.striker.setStyleSheet("""
+            #striker{
+                color: rgb(255, 0, 0);
+            }
+        """)
+        self.defender.setStyleSheet("""
+            #defender{
+                color: rgb(0, 255, 0);
+            }
+        """)
     def goalkeeperPoseCall(self):
         self.robotNav = False
         self.robotPoseEstimate = True
         self.goalkeeperPoseEstimate = True
+        self.goalkeeperNav = False
+        self.strikerPoseEstimate = False
+        self.strikerNav = False
+        self.defenderPoseEstimate = False
+        self.defenderNav = False
         self.goalkeeper.setStyleSheet("""
             #goalkeeper{
                 color: rgb(0, 0, 255);
                 background-color: rgb(0, 170, 0);
+            }
+        """)
+        self.striker.setStyleSheet("""
+            #striker{
+                color: rgb(255, 0, 0);
+            }
+        """)
+        self.defender.setStyleSheet("""
+            #defender{
+                color: rgb(0, 255, 0);
             }
         """)
 
