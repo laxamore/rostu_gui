@@ -44,7 +44,9 @@ class rostuWidget(QWidget):
         self.path = rospkg.RosPack().get_path('rostu_gui')
 
         self.listener = tf.TransformListener()
-        self.robotPose = [[0, 0, 0], [0, 0, 0, 0]]
+        self.strikerRobotPose = [[0, 0, 0], [0, 0, 0, 0]]
+        self.defenderRobotPose = [[0, 0, 0], [0, 0, 0, 0]]
+        self.goalkeeperRobotPose = [[0, 0, 0], [0, 0, 0, 0]]
 
         self.initUI()
         self.initButton()
@@ -165,7 +167,7 @@ class rostuWidget(QWidget):
             coorDefender = self.refereeCommand["kickoff_M_D_E"]
             coorGoalkeeper = self.refereeCommand["kickoff_M_G_E"]
         self.robotGoalPublish("striker", coorStriker[0], coorStriker[1], coorStriker[2], coorStriker[3])
-        # self.robotGoalPublish("defender", coorDefender[0], coorDefender[1], coorDefender[2], coorDefender[3])
+        self.robotGoalPublish("defender", coorDefender[0], coorDefender[1], coorDefender[2], coorDefender[3])
         # self.robotGoalPublish("goalkeeper", coorGoalkeeper[0], coorGoalkeeper[1], coorGoalkeeper[2], coorGoalkeeper[3])
     def freekickM(self):
         coorStriker = [0, 0, 0, 0]
@@ -180,7 +182,7 @@ class rostuWidget(QWidget):
             coorDefender = self.refereeCommand["freekick_M_D_E"]
             coorGoalkeeper = self.refereeCommand["freekick_M_G_E"]
         self.robotGoalPublish("striker", coorStriker[0], coorStriker[1], coorStriker[2], coorStriker[3])
-        # self.robotGoalPublish("defender", coorDefender[0], coorDefender[1], coorDefender[2], coorDefender[3])
+        self.robotGoalPublish("defender", coorDefender[0], coorDefender[1], coorDefender[2], coorDefender[3])
         # self.robotGoalPublish("goalkeeper", coorGoalkeeper[0], coorGoalkeeper[1], coorGoalkeeper[2], coorGoalkeeper[3])
     def goalkickM(self):
         coorStriker = [0, 0, 0, 0]
@@ -195,7 +197,7 @@ class rostuWidget(QWidget):
             coorDefender = self.refereeCommand["goalkick_M_D_E"]
             coorGoalkeeper = self.refereeCommand["goalkick_M_G_E"]
         self.robotGoalPublish("striker", coorStriker[0], coorStriker[1], coorStriker[2], coorStriker[3])
-        # self.robotGoalPublish("defender", coorDefender[0], coorDefender[1], coorDefender[2], coorDefender[3])
+        self.robotGoalPublish("defender", coorDefender[0], coorDefender[1], coorDefender[2], coorDefender[3])
         # self.robotGoalPublish("goalkeeper", coorGoalkeeper[0], coorGoalkeeper[1], coorGoalkeeper[2], coorGoalkeeper[3])
     def cornerM(self):
         coorStriker = [0, 0, 0, 0]
@@ -210,7 +212,7 @@ class rostuWidget(QWidget):
             coorDefender = self.refereeCommand["corner_M_D_E"]
             coorGoalkeeper = self.refereeCommand["corner_M_G_E"]
         self.robotGoalPublish("striker", coorStriker[0], coorStriker[1], coorStriker[2], coorStriker[3])
-        # self.robotGoalPublish("defender", coorDefender[0], coorDefender[1], coorDefender[2], coorDefender[3])
+        self.robotGoalPublish("defender", coorDefender[0], coorDefender[1], coorDefender[2], coorDefender[3])
         # self.robotGoalPublish("goalkeeper", coorGoalkeeper[0], coorGoalkeeper[1], coorGoalkeeper[2], coorGoalkeeper[3])
     def penaltyM(self):
         coorStriker = [0, 0, 0, 0]
@@ -233,7 +235,7 @@ class rostuWidget(QWidget):
             coorDefender = self.refereeCommand["kickoff_C_D_E"]
             coorGoalkeeper = self.refereeCommand["kickoff_C_G_E"]
         self.robotGoalPublish("striker", coorStriker[0], coorStriker[1], coorStriker[2], coorStriker[3])
-        # self.robotGoalPublish("defender", coorDefender[0], coorDefender[1], coorDefender[2], coorDefender[3])
+        self.robotGoalPublish("defender", coorDefender[0], coorDefender[1], coorDefender[2], coorDefender[3])
         # self.robotGoalPublish("goalkeeper", coorGoalkeeper[0], coorGoalkeeper[1], coorGoalkeeper[2], coorGoalkeeper[3])
     def freekickC(self):
         coorStriker = [0, 0, 0, 0]
@@ -248,7 +250,7 @@ class rostuWidget(QWidget):
             coorDefender = self.refereeCommand["freekick_C_D_E"]
             coorGoalkeeper = self.refereeCommand["freekick_C_G_E"]
         self.robotGoalPublish("striker", coorStriker[0], coorStriker[1], coorStriker[2], coorStriker[3])
-        # self.robotGoalPublish("defender", coorDefender[0], coorDefender[1], coorDefender[2], coorDefender[3])
+        self.robotGoalPublish("defender", coorDefender[0], coorDefender[1], coorDefender[2], coorDefender[3])
         # self.robotGoalPublish("goalkeeper", coorGoalkeeper[0], coorGoalkeeper[1], coorGoalkeeper[2], coorGoalkeeper[3])
     def goalkickC(self):
         coorStriker = [0, 0, 0, 0]
@@ -263,7 +265,7 @@ class rostuWidget(QWidget):
             coorDefender = self.refereeCommand["goalkick_C_D_E"]
             coorGoalkeeper = self.refereeCommand["goalkick_C_G_E"]
         self.robotGoalPublish("striker", coorStriker[0], coorStriker[1], coorStriker[2], coorStriker[3])
-        # self.robotGoalPublish("defender", coorDefender[0], coorDefender[1], coorDefender[2], coorDefender[3])
+        self.robotGoalPublish("defender", coorDefender[0], coorDefender[1], coorDefender[2], coorDefender[3])
         # self.robotGoalPublish("goalkeeper", coorGoalkeeper[0], coorGoalkeeper[1], coorGoalkeeper[2], coorGoalkeeper[3])
     def cornerC(self):
         coorStriker = [0, 0, 0, 0]
@@ -278,7 +280,7 @@ class rostuWidget(QWidget):
             coorDefender = self.refereeCommand["corner_C_D_E"]
             coorGoalkeeper = self.refereeCommand["corner_C_G_E"]
         self.robotGoalPublish("striker", coorStriker[0], coorStriker[1], coorStriker[2], coorStriker[3])
-        # self.robotGoalPublish("defender", coorDefender[0], coorDefender[1], coorDefender[2], coorDefender[3])
+        self.robotGoalPublish("defender", coorDefender[0], coorDefender[1], coorDefender[2], coorDefender[3])
         # self.robotGoalPublish("goalkeeper", coorGoalkeeper[0], coorGoalkeeper[1], coorGoalkeeper[2], coorGoalkeeper[3])
     def penaltyC(self):
         coorStriker = [0, 0, 0, 0]
@@ -303,7 +305,7 @@ class rostuWidget(QWidget):
             coorDefender = self.refereeCommand["dropball_M_D_"]
             coorGoalkeeper = self.refereeCommand["dropball_M_G_"]
         self.robotGoalPublish("striker", coorStriker[0], coorStriker[1], coorStriker[2], coorStriker[3])
-        # self.robotGoalPublish("defender", coorDefender[0], coorDefender[1], coorDefender[2], coorDefender[3])
+        self.robotGoalPublish("defender", coorDefender[0], coorDefender[1], coorDefender[2], coorDefender[3])
         # self.robotGoalPublish("goalkeeper", coorGoalkeeper[0], coorGoalkeeper[1], coorGoalkeeper[2], coorGoalkeeper[3])
     def endReferee(self):
         print("endReferee")
@@ -327,26 +329,56 @@ class rostuWidget(QWidget):
         if self.mouseClickInFieldArea:
             self.image = cv2.line(self.image, (self.mouseClickPos[1], self.mouseClickPos[0]), (self.mouseMovePos[1], self.mouseMovePos[0]), (0, 0, 255), 20)
         
+        
+
+        #Draw Striker Robot
         try:
-            self.robotPose = self.listener.lookupTransform('/map', '/base_link', rospy.Time(0))
+            self.strikerRobotPose = self.listener.lookupTransform('/map', 'striker/base_link', rospy.Time(0))
         except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
             None
 
-        orientation_list = [self.robotPose[1][0], self.robotPose[1][1], self.robotPose[1][2], self.robotPose[1][3]]
-        (r, p, y) = euler_from_quaternion(orientation_list)
+        strikerOrientation_list = [self.strikerRobotPose[1][0], self.strikerRobotPose[1][1], self.strikerRobotPose[1][2], self.strikerRobotPose[1][3]]
+        (strikerR, strikerP, strikerY) = euler_from_quaternion(strikerOrientation_list)
         
-        heading = ((y / (2 * np.pi)) * 360)
-        cosHeading = np.cos(np.radians(heading))
-        sinHeading = np.sin(np.radians(heading))
-        posX = int(self.robotPose[0][1] / 0.0025)
-        posY = int(self.robotPose[0][0] / 0.0025)
-
+        strikerHeading = ((strikerY / (2 * np.pi)) * 360)
+        strikerCosHeading = np.cos(np.radians(strikerHeading))
+        strikerSinHeading = np.sin(np.radians(strikerHeading))
+        strikerPosX = int(self.strikerRobotPose[0][1] / 0.0025)
+        strikerPosY = int(self.strikerRobotPose[0][0] / 0.0025)
+        
         self.image = cv2.resize(self.image, (int(width / 7), int(height / 7)))
-        self.image = cv2.circle(self.image, (int(posX / 7), int(posY / 7)), int(100 / 7), (0, 0, 255), -1)
-        self.image = cv2.line(self.image, (int(posX / 7), int(posY / 7)), (int(posX / 7) + int(sinHeading * int(100 / 7)), int(posY / 7) + int(cosHeading * int(100 / 7))), (255, 255, 255), int(20 / 7))
+        self.image = cv2.circle(self.image, (int(strikerPosX / 7), int(strikerPosY / 7)), int(100 / 7), (0, 0, 255), -1)
+        self.image = cv2.line(self.image, (int(strikerPosX / 7), int(strikerPosY / 7)), (int(strikerPosX / 7) + int(strikerSinHeading * int(100 / 7)), int(strikerPosY / 7) + int(strikerCosHeading * int(100 / 7))), (255, 255, 255), int(20 / 7))
+        ##########################
+
+        #Draw Defender Robot
+        try:
+            self.defenderRobotPose = self.listener.lookupTransform('/map', 'defender/base_link', rospy.Time(0))
+        except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
+            None
+
+        defenderOrientation_list = [self.defenderRobotPose[1][0], self.defenderRobotPose[1][1], self.defenderRobotPose[1][2], self.defenderRobotPose[1][3]]
+        (defenderR, defenderP, defenderY) = euler_from_quaternion(defenderOrientation_list)
+        
+        defenderHeading = ((defenderY / (2 * np.pi)) * 360)
+        defenderCosHeading = np.cos(np.radians(defenderHeading))
+        defenderSinHeading = np.sin(np.radians(defenderHeading))
+        defenderPosX = int(self.defenderRobotPose[0][1] / 0.0025)
+        defenderPosY = int(self.defenderRobotPose[0][0] / 0.0025)
+        
+        self.image = cv2.resize(self.image, (int(width / 7), int(height / 7)))
+        self.image = cv2.circle(self.image, (int(defenderPosX / 7), int(defenderPosY / 7)), int(100 / 7), (100, 200, 0), -1)
+        self.image = cv2.line(self.image, (int(defenderPosX / 7), int(defenderPosY / 7)), (int(defenderPosX / 7) + int(defenderSinHeading * int(100 / 7)), int(defenderPosY / 7) + int(defenderCosHeading * int(100 / 7))), (255, 255, 255), int(20 / 7))
+        ##########################
+
+        # #Draw Goalkeeper Robot
+        # self.image = cv2.resize(self.image, (int(width / 7), int(height / 7)))
+        # self.image = cv2.circle(self.image, (int(posX / 7), int(posY / 7)), int(100 / 7), (0, 0, 255), -1)
+        # self.image = cv2.line(self.image, (int(posX / 7), int(posY / 7)), (int(posX / 7) + int(sinHeading * int(100 / 7)), int(posY / 7) + int(cosHeading * int(100 / 7))), (255, 255, 255), int(20 / 7))
+        # ##########################
 
         self.fieldImage(self.image, 1)
-        
+
     def fieldImage(self, img, window=1):
         qformat = QImage.Format_Indexed8
 
@@ -372,8 +404,8 @@ class rostuWidget(QWidget):
         goal_publish_msg.pose.orientation.w = w
         if robot == "striker":
             striker_publish_goal.publish(goal_publish_msg)
-        # elif robot == "defender":
-            # defender_publish_goal.publish(goal_publish_msg)
+        elif robot == "defender":
+            defender_publish_goal.publish(goal_publish_msg)
         # elif robot == "goalkeeper":
             # goalkeeper_publish_goal.publish(goal_publish_msg)
 
@@ -386,8 +418,8 @@ class rostuWidget(QWidget):
         pose_estimate_publish_msg.pose.pose.orientation.w = w
         if robot == "striker":
             striker_pose_estimate.publish(pose_estimate_publish_msg)
-        # elif robot == "defender":
-        #     defender_pose_estimate.publish(pose_estimate_publish_msg)
+        elif robot == "defender":
+            defender_pose_estimate.publish(pose_estimate_publish_msg)
         # elif robot == "goalkeeper":
         #     goalkeeper_pose_estimate.publish(pose_estimate_publish_msg)
 
@@ -593,9 +625,19 @@ class rostuWidget(QWidget):
             delta_y = self.mouseReleasePos[1] - self.mouseClickPos[1]
             orientation = quaternion_from_euler(0, 0, np.arctan2(delta_y, delta_x))
             if self.robotNav:
-                self.robotGoalPublish("striker", self.mouseClickPos[0] * 0.0025, self.mouseClickPos[1] * 0.0025, orientation[2], orientation[3])
+                if self.strikerNav:
+                    self.robotGoalPublish("striker", self.mouseClickPos[0] * 0.0025, self.mouseClickPos[1] * 0.0025, orientation[2], orientation[3])
+                elif self.defenderNav:
+                    self.robotGoalPublish("defender", self.mouseClickPos[0] * 0.0025, self.mouseClickPos[1] * 0.0025, orientation[2], orientation[3])
+                # elif self.goalkeeperNav:
+                #     self.robotGoalPublish("goalkeeper", self.mouseClickPos[0] * 0.0025, self.mouseClickPos[1] * 0.0025, orientation[2], orientation[3])
             if self.robotPoseEstimate:
-                self.robotPoseEstimation("striker", self.mouseClickPos[0] * 0.0025, self.mouseClickPos[1] * 0.0025, orientation[2], orientation[3])
+                if self.strikerPoseEstimate:
+                    self.robotPoseEstimation("striker", self.mouseClickPos[0] * 0.0025, self.mouseClickPos[1] * 0.0025, orientation[2], orientation[3])
+                elif self.defenderPoseEstimate:
+                    self.robotPoseEstimation("defender", self.mouseClickPos[0] * 0.0025, self.mouseClickPos[1] * 0.0025, orientation[2], orientation[3])
+                # elif self.goalkeeperPoseEstimate:
+                #     self.robotPoseEstimation("striker", self.mouseClickPos[0] * 0.0025, self.mouseClickPos[1] * 0.0025, orientation[2], orientation[3])
         self.turnFalse()
 
     def mouseMoveEvent(self, event):
@@ -621,12 +663,12 @@ class rostuWidget(QWidget):
 
 if __name__ == "__main__":
     rospy.init_node('rostu_gui')
-    striker_publish_goal = rospy.Publisher('move_base_simple/goal', PoseStamped, queue_size=1)  
-    striker_pose_estimate = rospy.Publisher('initialpose', PoseWithCovarianceStamped, queue_size=1)   
-    # defender_publish_goal = rospy.Publisher('defender/move_base_simple/goal', PoseStamped, queue_size=1)  
-    # defender_pose_estimate = rospy.Publisher('defender/initialpose', PoseWithCovarianceStamped, queue_size=1)   
-    # goalkeeper_publish_goal = rospy.Publisher('goalkeeper/move_base_simple/goal', PoseStamped, queue_size=1)  
-    # goalkeeper_pose_estimate = rospy.Publisher('goalkeeper/initialpose', PoseWithCovarianceStamped, queue_size=1)    
+    striker_publish_goal = rospy.Publisher('/striker/move_base_simple/goal', PoseStamped, queue_size=1)  
+    striker_pose_estimate = rospy.Publisher('/striker/initialpose', PoseWithCovarianceStamped, queue_size=1)   
+    defender_publish_goal = rospy.Publisher('/defender/move_base_simple/goal', PoseStamped, queue_size=1)  
+    defender_pose_estimate = rospy.Publisher('/defender/initialpose', PoseWithCovarianceStamped, queue_size=1)   
+    # goalkeeper_publish_goal = rospy.Publisher('/goalkeeper/move_base_simple/goal', PoseStamped, queue_size=1)  
+    # goalkeeper_pose_estimate = rospy.Publisher('/goalkeeper/initialpose', PoseWithCovarianceStamped, queue_size=1)    
 
     app = QApplication(sys.argv)
     window = MainWindow()
