@@ -1,3 +1,4 @@
 <launch>
     <node name="rostu_gui" pkg="rostu_gui" type="rostuUi.py" output="screen" />
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find rostu_v2)/cfg/rviz_navigation_teb_multirobot.rviz"/>
 </launch>

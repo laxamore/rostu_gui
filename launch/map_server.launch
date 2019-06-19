@@ -1,0 +1,5 @@
+<launch>
+	<node name="map_server" pkg="map_server" type="map_server" args="$(find rostu_v2)/maps/field.yaml" output="screen">
+		<param name="frame_id" value="/map"/>
+	</node>
+</launch>

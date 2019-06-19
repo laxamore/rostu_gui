@@ -16,6 +16,7 @@ from tf.transformations import euler_from_quaternion, quaternion_from_euler
 from geometry_msgs.msg import PoseStamped 
 from geometry_msgs.msg import PoseWithCovarianceStamped 
 from geometry_msgs.msg import Pose 
+from actionlib_msgs.msg import GoalID
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
@@ -293,7 +294,12 @@ class rostuWidget(QWidget):
     def startReferee(self):
         print("startReferee")
     def stopReferee(self):
-        print("stopReferee")
+        strikerGoalCancel = GoalID()
+        defenderGoalCancel = GoalID()
+        goalkeeperGoalCancel = GoalID()
+        striker_cancel_goal.publish(strikerGoalCancel)
+        defender_cancel_goal.publish(defenderGoalCancel)
+        goalkeeper_cancel_goal.publish(goalkeeperGoalCancel)
     def dropballReferee(self):
         coorStriker = [0, 0, 0, 0]
         if self.robotTeam == "C":
@@ -669,6 +675,10 @@ if __name__ == "__main__":
     defender_pose_estimate = rospy.Publisher('/defender/initialpose', PoseWithCovarianceStamped, queue_size=1)   
     # goalkeeper_publish_goal = rospy.Publisher('/goalkeeper/move_base_simple/goal', PoseStamped, queue_size=1)  
     # goalkeeper_pose_estimate = rospy.Publisher('/goalkeeper/initialpose', PoseWithCovarianceStamped, queue_size=1)    
+
+    striker_cancel_goal = rospy.Publisher('/striker/move_base/cancel', GoalID, queue_size=1)
+    defender_cancel_goal = rospy.Publisher('/defender/move_base/cancel', GoalID, queue_size=1)
+    goalkeeper_cancel_goal = rospy.Publisher('/goalkeeper/move_base/cancel', GoalID, queue_size=1)
 
     app = QApplication(sys.argv)
     window = MainWindow()
